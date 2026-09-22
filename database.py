@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
 # ★ 환경변수 DATABASE_URL이 있으면 그것을, 없으면 로컬 SQLite 파일 사용.
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./memo.db")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./intro.db")
 
 # SQLite는 한 스레드만 허용하므로 FastAPI에서 쓰려면 이 옵션이 필요.
 connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
