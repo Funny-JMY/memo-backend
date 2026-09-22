@@ -9,7 +9,7 @@ FastAPI로 방명록, 섹션 반응, 방문 통계 API를 제공하며 Swagger U
 | --- | --- |
 | API 문서 (Swagger UI) | https://memo-backend-sn8m.onrender.com/docs |
 | 소개 페이지 (Vercel) | https://memo-frontend-yjm3.vercel.app/ |
-| 프론트엔드 저장소 | https://github.com/Funny-JMY/memo-frontend |
+| 프론트엔드 저장소 | https://github.com/Funny-JMY/self-intro-frontend |
 
 ## API 목록
 
