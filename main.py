@@ -1,4 +1,5 @@
 import hashlib
+import logging
 import os
 import secrets
 from datetime import datetime, timedelta
@@ -13,15 +14,19 @@ from sqlalchemy.orm import Session
 
 import models
 import schemas
-from database import DATABASE_URL, Base, SessionLocal, engine
+from database import Base, SessionLocal, engine
 from models import utcnow
 
 Base.metadata.create_all(bind=engine)
 
-IS_LOCAL = DATABASE_URL.startswith("sqlite")
-ADMIN_TOKEN = os.getenv("ADMIN_TOKEN") or ("dev-admin-token" if IS_LOCAL else "")
+ADMIN_TOKEN = os.getenv("ADMIN_TOKEN")
 if not ADMIN_TOKEN:
-    raise RuntimeError("운영 환경에서는 ADMIN_TOKEN 환경변수를 반드시 설정해야 합니다.")
+    # 코드에 고정 토큰을 두면 공개 저장소에 그대로 노출되므로,
+    # 미설정 시에는 매 기동마다 임시 토큰을 만들어 서버 로그로만 알린다.
+    ADMIN_TOKEN = secrets.token_urlsafe(24)
+    logging.getLogger("uvicorn.error").warning(
+        "ADMIN_TOKEN이 설정되지 않아 임시 토큰을 생성했습니다: %s", ADMIN_TOKEN
+    )
 
 # 방문자를 구분하되 IP 원문은 저장하지 않기 위해, 솔트를 섞어 해시한 값만 보관한다.
 HASH_SALT = os.getenv("VISITOR_HASH_SALT", "local-dev-salt")

@@ -57,7 +57,7 @@ pip install -r requirements.txt
 uvicorn main:app --reload       # http://localhost:8000/docs
 ```
 
-로컬에서는 SQLite(`intro.db`)를 사용하고, 관리자 토큰은 `dev-admin-token`이 기본값으로 설정됩니다.
+로컬에서는 SQLite(`intro.db`)를 사용합니다. `ADMIN_TOKEN`을 지정하지 않으면 기동할 때마다 임시 토큰이 만들어져 서버 로그에 출력되므로, 그 값을 Swagger UI의 Authorize에 넣어 테스트하면 됩니다.
 
 ## 환경 변수
 
@@ -65,12 +65,12 @@ uvicorn main:app --reload       # http://localhost:8000/docs
 | --- | --- | --- |
 | `DATABASE_URL` | DB 접속 주소 | `sqlite:///./intro.db` |
 | `ALLOWED_ORIGINS` | CORS 허용 출처 (쉼표 구분) | `http://localhost:5173` |
-| `ADMIN_TOKEN` | 관리자 API 토큰 | 로컬은 `dev-admin-token`, **운영은 필수** |
+| `ADMIN_TOKEN` | 관리자 API 토큰 | 미설정 시 기동할 때마다 임시 토큰 생성 |
 | `VISITOR_HASH_SALT` | 방문자 해시용 솔트 | `local-dev-salt` |
 | `GUESTBOOK_COOLDOWN_SECONDS` | 재작성 대기 시간(초) | `60` |
 | `GUESTBOOK_DAILY_LIMIT` | 하루 작성 한도 | `10` |
 
-`ADMIN_TOKEN`은 운영 환경(비-SQLite)에서 설정하지 않으면 서버가 시작되지 않습니다. 기본 토큰이 그대로 노출되는 것을 막기 위한 장치입니다.
+`ADMIN_TOKEN`을 설정하지 않으면 서버가 기동할 때마다 임시 토큰을 만들어 로그에만 남깁니다. 코드에 고정 토큰을 두어 공개 저장소에 노출되는 것을 막기 위한 장치이므로, 배포 환경에서는 직접 값을 지정해 두는 편이 편합니다.
 
 ## 배포 (Render)
 
